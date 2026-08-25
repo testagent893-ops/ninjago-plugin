@@ -8,6 +8,7 @@ powers:
   fire:
     damage: 6.0
     fire_ticks: 60
+    radius: 1.5
   lightning:
     damage: 5.0
     radius: 5.0
