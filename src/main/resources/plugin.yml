@@ -1,0 +1,13 @@
+name: NinjagoSMP
+version: 1.1.0
+main: fr.rdm.ninjago.NinjagoPlugin
+api-version: '1.21.11'
+author: rdm
+commands:
+  ninjago:
+    description: Commandes du plugin Ninjago SMP
+    usage: /ninjago <give|list|remove|reload> ...
+    aliases: [nj]
+permissions:
+  ninjago.admin:
+    default: op

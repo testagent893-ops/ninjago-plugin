@@ -1,0 +1,19 @@
+# Ninjago SMP - configuration de base
+cooldowns:
+  sword_of_fire: 3
+  shurikens_of_ice: 2
+  nunchucks_of_lightning: 4
+  scythe_of_quakes: 5
+powers:
+  fire:
+    damage: 6.0
+    fire_ticks: 60
+  lightning:
+    damage: 5.0
+    radius: 5.0
+  scythe:
+    damage: 6.0
+    radius: 5.0
+  shurikens:
+    damage: 4.0
+    spread: 0.22
