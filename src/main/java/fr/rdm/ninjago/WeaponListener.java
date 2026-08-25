@@ -72,12 +72,15 @@ public final class WeaponListener implements Listener {
     public void onProjectileHit(ProjectileHitEvent event) {
         if (event.getEntity() instanceof SmallFireball fireball
                 && fireball.getPersistentDataContainer().has(fireballKey, PersistentDataType.BYTE)) {
-            if (event.getHitEntity() instanceof LivingEntity living) {
-                Object shooter = fireball.getShooter();
-                living.damage(plugin.getConfig().getDouble("powers.fire.damage", 6.0), shooter instanceof Entity e ? e : null);
-                living.setFireTicks(Math.max(living.getFireTicks(), plugin.getConfig().getInt("powers.fire.fire_ticks", 60)));
-            }
+            Object shooter = fireball.getShooter();
             Location hit = fireball.getLocation();
+            double radius = plugin.getConfig().getDouble("powers.fire.radius", 1.5);
+            for (Entity nearby : hit.getWorld().getNearbyEntities(hit, radius, radius, radius)) {
+                if (nearby instanceof LivingEntity living && nearby != shooter) {
+                    living.damage(plugin.getConfig().getDouble("powers.fire.damage", 6.0), shooter instanceof Entity e ? e : null);
+                    living.setFireTicks(Math.max(living.getFireTicks(), plugin.getConfig().getInt("powers.fire.fire_ticks", 60)));
+                }
+            }
             hit.getWorld().spawnParticle(Particle.FLAME, hit, 30, 0.35, 0.35, 0.35, 0.03);
             return;
         }
