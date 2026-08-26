@@ -10,7 +10,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.block.Action;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.*;
@@ -64,8 +66,44 @@ public final class WeaponListener implements Listener {
             Vector direction = base.clone().add(new Vector(offset, 0, 0).rotateAroundY(Math.toRadians(player.getLocation().getYaw()))).normalize();
             ball.setVelocity(direction.multiply(2.2));
             ball.getPersistentDataContainer().set(shurikenKey, PersistentDataType.BYTE, (byte) 1);
+            attachDisplay(ball, "ninjago", "shuriken_projectile", 0.55f);
         }
         player.getWorld().spawnParticle(Particle.SNOWFLAKE, player.getEyeLocation(), 18, 0.25, 0.25, 0.25, 0.03);
+    }
+
+    /**
+     * Fait apparaître un item flottant avec une texture custom qui suit le projectile réel.
+     * Ça évite de reskin les textures vanilla partagées (fire_charge.png / snowball.png)
+     * qui affecteraient les autres joueurs et les mobs (Ghast, Blaze...).
+     */
+    private void attachDisplay(Entity projectile, String namespace, String itemKey, float scale) {
+        ItemStack icon = new ItemStack(Material.PAPER);
+        ItemMeta meta = icon.getItemMeta();
+        meta.setItemModel(new NamespacedKey(namespace, itemKey));
+        icon.setItemMeta(meta);
+
+        ItemDisplay display = projectile.getWorld().spawn(projectile.getLocation(), ItemDisplay.class, d -> {
+            d.setItemStack(icon);
+            d.setBillboard(Display.Billboard.CENTER);
+            org.joml.Vector3f s = new org.joml.Vector3f(scale, scale, scale);
+            d.setTransformation(new org.bukkit.util.Transformation(
+                    new org.joml.Vector3f(0, 0, 0),
+                    new org.joml.AxisAngle4f(0, 0, 0, 1),
+                    s,
+                    new org.joml.AxisAngle4f(0, 0, 0, 1)));
+        });
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (!projectile.isValid() || projectile.isDead()) {
+                    display.remove();
+                    this.cancel();
+                    return;
+                }
+                display.teleport(projectile.getLocation());
+            }
+        }.runTaskTimer(plugin, 0L, 1L);
     }
 
     @EventHandler
@@ -108,6 +146,7 @@ public final class WeaponListener implements Listener {
         fireball.setIsIncendiary(false);
         fireball.setYield(0);
         fireball.setVelocity(player.getEyeLocation().getDirection().normalize().multiply(1.5));
+        attachDisplay(fireball, "ninjago", "fireball_projectile", 0.6f);
         player.getWorld().playSound(player.getLocation(), Sound.ITEM_FIRECHARGE_USE, 1f, 1.1f);
         player.getWorld().spawnParticle(Particle.FLAME, player.getEyeLocation(), 20, 0.3, 0.3, 0.3, 0.02);
     }
