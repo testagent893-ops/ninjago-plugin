@@ -85,10 +85,6 @@ public final class WeaponListener implements Listener {
         player.getWorld().spawnParticle(Particle.FLAME, player.getEyeLocation(), 20, 0.3, 0.3, 0.3, 0.02);
     }
 
-    /**
-     * Spinjutsu : boost de vitesse + poussée des ennemis proches, thème visuel/effet
-     * différent selon l'arme équipée. Déclenché en étant accroupi + clic droit.
-     */
     private void spinjutsu(Player player, WeaponType type) {
         String path = "spinjutsu." + type.id() + ".";
         long cooldown = plugin.getConfig().getLong(path + "cooldown", 8L) * 1000L;
@@ -137,11 +133,6 @@ public final class WeaponListener implements Listener {
         player.getWorld().playSound(player.getLocation(), Sound.ITEM_TRIDENT_RIPTIDE_1, 1f, 1f);
     }
 
-    /**
-     * Projectile 100% custom : uniquement un ItemDisplay avec notre texture, sans aucune
-     * vraie entité vanilla (Snowball/Fireball) en parallèle. Ça évite tout dédoublement visuel
-     * et n'affecte aucune texture partagée avec les autres joueurs ou les mobs.
-     */
     private void launchCustomProjectile(Player shooter, Location start, Vector direction, double speed,
                                          String namespace, String itemKey, float scale, Kind kind) {
         ItemStack icon = new ItemStack(Material.PAPER);
@@ -214,6 +205,9 @@ public final class WeaponListener implements Listener {
         } else {
             target.damage(plugin.getConfig().getDouble("powers.shurikens.damage", 4.0), shooter);
             target.setFreezeTicks(Math.min(target.getMaxFreezeTicks(), target.getFreezeTicks() + 60));
+            int slowDuration = plugin.getConfig().getInt("powers.shurikens.slowness_duration", 60);
+            int slowAmplifier = Math.max(0, plugin.getConfig().getInt("powers.shurikens.slowness_amplifier", 2) - 1);
+            target.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, slowDuration, slowAmplifier));
             world.spawnParticle(Particle.SNOWFLAKE, loc, 40, 0.6, 0.6, 0.6, 0.05);
             world.playSound(loc, Sound.BLOCK_GLASS_BREAK, 1.0f, 1.6f);
         }
