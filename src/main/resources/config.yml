@@ -1,46 +1,48 @@
 # Ninjago SMP - configuration de base
 cooldowns:
-  sword_of_fire: 3
-  shurikens_of_ice: 2
-  nunchucks_of_lightning: 4
-  scythe_of_quakes: 5
+  sword_of_fire: 60
+  shurikens_of_ice: 30
+  nunchucks_of_lightning: 60
+  scythe_of_quakes: 60
 powers:
   fire:
-    damage: 6.0
+    damage: 14.0
     fire_ticks: 60
     radius: 1.5
   lightning:
-    damage: 5.0
+    damage: 12.0
     radius: 5.0
   scythe:
-    damage: 6.0
+    damage: 14.0
     radius: 5.0
   shurikens:
     damage: 4.0
     spread: 0.22
+    slowness_duration: 60
+    slowness_amplifier: 2
 spinjutsu:
   sword_of_fire:
-    cooldown: 8
-    speed_duration: 3
-    speed_amplifier: 2
+    cooldown: 90
+    speed_duration: 10
+    speed_amplifier: 3
     push_radius: 3.5
     push_strength: 1.3
   shurikens_of_ice:
-    cooldown: 8
-    speed_duration: 3
-    speed_amplifier: 2
+    cooldown: 90
+    speed_duration: 10
+    speed_amplifier: 3
     push_radius: 3.5
     push_strength: 1.1
     slow_ticks: 40
   nunchucks_of_lightning:
-    cooldown: 6
-    speed_duration: 2
+    cooldown: 90
+    speed_duration: 10
     speed_amplifier: 3
     push_radius: 3.0
     push_strength: 1.6
   scythe_of_quakes:
-    cooldown: 9
-    speed_duration: 3
-    speed_amplifier: 2
+    cooldown: 90
+    speed_duration: 10
+    speed_amplifier: 3
     push_radius: 4.5
     push_strength: 1.4
