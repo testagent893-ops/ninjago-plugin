@@ -18,3 +18,29 @@ powers:
   shurikens:
     damage: 4.0
     spread: 0.22
+spinjutsu:
+  sword_of_fire:
+    cooldown: 8
+    speed_duration: 3
+    speed_amplifier: 2
+    push_radius: 3.5
+    push_strength: 1.3
+  shurikens_of_ice:
+    cooldown: 8
+    speed_duration: 3
+    speed_amplifier: 2
+    push_radius: 3.5
+    push_strength: 1.1
+    slow_ticks: 40
+  nunchucks_of_lightning:
+    cooldown: 6
+    speed_duration: 2
+    speed_amplifier: 3
+    push_radius: 3.0
+    push_strength: 1.6
+  scythe_of_quakes:
+    cooldown: 9
+    speed_duration: 3
+    speed_amplifier: 2
+    push_radius: 4.5
+    push_strength: 1.4
