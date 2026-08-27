@@ -85,6 +85,10 @@ public final class WeaponListener implements Listener {
         player.getWorld().spawnParticle(Particle.FLAME, player.getEyeLocation(), 20, 0.3, 0.3, 0.3, 0.02);
     }
 
+    /**
+     * Spinjutsu : boost de vitesse + poussée des ennemis proches, thème visuel/effet
+     * différent selon l'arme équipée. Déclenché en étant accroupi + clic droit.
+     */
     private void spinjutsu(Player player, WeaponType type) {
         String path = "spinjutsu." + type.id() + ".";
         long cooldown = plugin.getConfig().getLong(path + "cooldown", 8L) * 1000L;
@@ -130,9 +134,14 @@ public final class WeaponListener implements Listener {
                 player.getWorld().spawnParticle(particle, p, 1, 0, 0, 0, 0.01);
             }
         }
-        player.getWorld().playSound(player.getLocation(), Sound.ITEM_TRIDENT_SPIN_ATTACK, 1f, 1f);
+        player.getWorld().playSound(player.getLocation(), Sound.ITEM_TRIDENT_RIPTIDE_1, 1f, 1f);
     }
 
+    /**
+     * Projectile 100% custom : uniquement un ItemDisplay avec notre texture, sans aucune
+     * vraie entité vanilla (Snowball/Fireball) en parallèle. Ça évite tout dédoublement visuel
+     * et n'affecte aucune texture partagée avec les autres joueurs ou les mobs.
+     */
     private void launchCustomProjectile(Player shooter, Location start, Vector direction, double speed,
                                          String namespace, String itemKey, float scale, Kind kind) {
         ItemStack icon = new ItemStack(Material.PAPER);
